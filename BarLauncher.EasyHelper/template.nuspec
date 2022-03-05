@@ -6,6 +6,7 @@
     <authors>gissehel</authors>
     <owners>gissehel</owners>
     <projectUrl>https://github.com/gissehel/BarLauncher-EasyHelper</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/gissehel/BarLauncher-EasyHelper/master/res/BarLauncher-EasyHelper-32.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher.{description_add}</description>
     <releaseNotes></releaseNotes>
