@@ -8,10 +8,10 @@ IF EXIST .\create-package.cmd cd ..
 CALL scripts\environnement.cmd
 
 CALL :SET_BUILD_DATE
-CALL :SET_NUGET_PACKAGE_VERSION
 
-CALL :CREATE_NUGET Wox.EasyHelper
-CALL :CREATE_NUGET Wox.EasyHelper.Test.Mock
+CALL :CREATE_NUGET BarLauncher.EasyHelper
+CALL :CREATE_NUGET BarLauncher.EasyHelper.Test.Mock
+CALL :CREATE_NUGET BarLauncher.EasyHelper.Wox
 
 :SET_BUILD_DATE
 
@@ -34,7 +34,7 @@ GOTO FIN
 
 :SET_NUGET_PACKAGE_VERSION
 IF NOT %VERSION%==dev GOTO NODEV
-for /f "usebackq tokens=1* delims=: " %%i in (`scripts\sed.exe -e "s/.*<\(.*\)>\(.*\)<.*/\1:\2/g"  Wox.EasyHelper\Wox.EasyHelper.csproj`) do (
+for /f "usebackq tokens=1* delims=: " %%i in (`scripts\sed.exe -e "s/.*<\(.*\)>\(.*\)<.*/\1:\2/g"  %NUGET_PACKAGE_PATH%\%NUGET_PACKAGE_NAME%.csproj`) do (
   if /i "%%i"=="Version" set VERSION=%%j
 )
 SNAPSHOT=SNAPSHOT
@@ -50,6 +50,7 @@ GOTO FIN
 SET NUGET_PACKAGE_NAME=%1
 SET NUGET_PACKAGE_PATH=%1
 SET NUGET_PACKAGE_DESCRIPTION_ADD=%2
+CALL :SET_NUGET_PACKAGE_VERSION
 
 SET NUGET_REPOURL=https://api.nuget.org/v3/index.json
 SET PACKAGE_FILENAME=%NUGET_PACKAGE_NAME%.%NUGET_PACKAGE_VERSION%.nupkg
@@ -58,7 +59,7 @@ SET NUGET_PACKAGE_VERSION_PATTERN={version}
 SET NUGET_PACKAGE_DESCRIPTION_ADD_PATTERN={description_add}
 SET NUGET_PACKAGE_PATH_PATTERN={package_path}
 
-SET NUSPEC_TEMPLATE=scripts\template.nuspec
+SET NUSPEC_TEMPLATE=%NUGET_PACKAGE_PATH%\template.nuspec
 SET NUSPEC_FILE=tempnuspec.nuspec
 
 scripts\sed.exe -e "s/%NUGET_PACKAGE_VERSION_PATTERN%/%NUGET_PACKAGE_VERSION%/g; s/%NUGET_PACKAGE_NAME_PATTERN%/%NUGET_PACKAGE_NAME%/g; s/%NUGET_PACKAGE_DESCRIPTION_ADD_PATTERN%/%NUGET_PACKAGE_DESCRIPTION_ADD%/g; s/%NUGET_PACKAGE_PATH_PATTERN%/%NUGET_PACKAGE_PATH%/g;" "%NUSPEC_TEMPLATE%" > "%NUSPEC_FILE%" 
