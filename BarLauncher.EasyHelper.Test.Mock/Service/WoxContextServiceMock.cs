@@ -1,11 +1,12 @@
 ﻿using BarLauncher.EasyHelper.Core.Service;
+using BarLauncher.EasyHelper.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BarLauncher.EasyHelper.Test.Mock.Service
 {
-    public class BarLauncherContextServiceMock : IBarLauncherContextService
+    public class BarLauncherContextServiceMock : BarLauncherContextServiceBase, IBarLauncherContextService
     {
         private QueryServiceMock QueryService { get; set; }
 
@@ -21,18 +22,20 @@ namespace BarLauncher.EasyHelper.Test.Mock.Service
             BarLauncherResultFinderByCommandName[commandName] = queryFetcher;
         }
 
-        public string ActionKeyword { get; set; }
 
-        public string Seperater => " ";
+        private string _actionKeyword;
+
+        public string SetActionKeyword(string value) => _actionKeyword = value;
+
+        public override string ActionKeyword => this._actionKeyword;
+
+        public override string Seperater => " ";
 
         public string CurrentQuery { get; set; } = "";
 
-        public string IconPath => "This is icon path";
+        public override string IconPath => "This is icon path";
 
-        public void ChangeQuery(string query)
-        {
-            SetCurrentQuery(query);
-        }
+        public override void ChangeQuery(string query) => SetCurrentQuery(query);
 
         public void SetQueryFromInterface(string query)
         {
@@ -43,7 +46,7 @@ namespace BarLauncher.EasyHelper.Test.Mock.Service
         {
             CurrentQuery = query;
             var woxQuery = QueryService.GetBarLauncherQuery(CurrentQuery);
-            ActionKeyword = woxQuery.Command;
+            SetActionKeyword(woxQuery.Command);
             if (BarLauncherResultFinderByCommandName.ContainsKey(woxQuery.Command))
             {
                 var results = BarLauncherResultFinderByCommandName[woxQuery.Command].GetResults(woxQuery);
@@ -61,33 +64,6 @@ namespace BarLauncher.EasyHelper.Test.Mock.Service
                 Results = new List<BarLauncherResult>();
             }
         }
-
-        public BarLauncherResult GetActionResult(string title, string subTitle, Action action) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () =>
-            {
-                action();
-            },
-            ShouldClose = true,
-        };
-
-        public BarLauncherResult GetCompletionResult(string title, string subTitle, Func<string> getNewQuery) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () => ChangeQuery(ActionKeyword + Seperater + getNewQuery() + Seperater),
-            ShouldClose = false,
-        };
-
-        public BarLauncherResult GetCompletionResultFinal(string title, string subTitle, Func<string> getNewQuery) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () => ChangeQuery(ActionKeyword + Seperater + getNewQuery()),
-            ShouldClose = false,
-        };
 
         public IEnumerable<BarLauncherResult> Results { get; set; } = new List<BarLauncherResult>();
 

@@ -26,8 +26,8 @@ namespace BarLauncher.EasyHelper.Wox
 
         public List<Result> Query(Query query)
         {
-            var woxQuery = QueryService.GetBarLauncherQuery(query);
-            var results = BarLauncherResultFinder.GetResults(woxQuery);
+            var barLauncherQuery = QueryService.GetBarLauncherQuery(query);
+            var results = BarLauncherResultFinder.GetResults(barLauncherQuery);
             return ResultService.MapResults(results);
         }
 
@@ -35,7 +35,10 @@ namespace BarLauncher.EasyHelper.Wox
 
         public void Dispose()
         {
-            BarLauncherResultFinder.Dispose();
+            if (BarLauncherResultFinder != null)
+            {
+                BarLauncherResultFinder.Dispose();
+            }
         }
     }
 }

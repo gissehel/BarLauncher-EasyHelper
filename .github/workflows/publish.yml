@@ -8,7 +8,7 @@ on:
             - 'v*'
 
 env:
-    SOLUTION_NAME: 'Wox-EasyHelper.sln' # set this to your application's name
+    SOLUTION_NAME: 'BarLauncher-EasyHelper.sln' # set this to your application's name
 
 jobs:
     build:
@@ -17,30 +17,21 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: "Set env vars"
-              run: |
-                  # REFNAME : the version number if it's a tag, or the branch name if it's a branch
-                  scripts\set-refname-in-env.cmd "${{ github.ref }}" "%GITHUB_ENV%"
+            - name: build ${{ env.SOLUTION_NAME }}
+              run: dotnet.exe build ${{ env.SOLUTION_NAME }}
 
-            - name: Restore NuGet packages
-              run: nuget restore ${{ env.SOLUTION_NAME }}
+            - name: pack ${{ env.SOLUTION_NAME }}
+              run: dotnet.exe pack ${{ env.SOLUTION_NAME }}
+
+            - name: Upload Artifacts
+              if: "contains(github.ref, 'refs/tags')"
+              uses: actions/upload-artifact@v2
+              with:
+                name: nupkg
+                path: ./nupkg/*.nupkg
 
             - name: Build
               run: scripts\compile.cmd
       
-            - name: Create package (dev)
-              if: "!contains(github.ref, 'refs/tags')"
-              run: scripts\create-package.cmd "dev"
-
-            - name: Create package (release ${{ env.REFNAME }})
-              if: "contains(github.ref, 'refs/tags')"
-              run: scripts\create-package.cmd ${{ env.REFNAME }} ${{ secrets.NUGET_API_KEY }}
-
-            - name: List directory
-              run: dir
-
-            - name: Publish artifacts
-              uses: actions/upload-artifact@v2
-              with:
-                name: Wox.EasyHelper
-                path: Wox.EasyHelper.*.nupkg
+            - name: List directory nupkg
+              run: dir nupkg

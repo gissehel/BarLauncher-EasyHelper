@@ -17,40 +17,13 @@ namespace BarLauncher.EasyHelper
         {
         }
 
-        protected BarLauncherResult GetNoActionResult(string title, string subTitle) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            ShouldClose = false,
-        };
+        protected BarLauncherResult GetNoActionResult(string title, string subTitle) => BarLauncherContextService.GetNoActionResult(title, subTitle);
 
-        protected BarLauncherResult GetActionResult(string title, string subTitle, Action action) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () =>
-            {
-                action();
-                // ChangeQuery("");
-            },
-            ShouldClose = true,
-        };
+        protected BarLauncherResult GetActionResult(string title, string subTitle, Action action) => BarLauncherContextService.GetActionResult(title, subTitle, action);
 
-        protected BarLauncherResult GetCompletionResult(string title, string subTitle, Func<string> getNewQuery) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () => BarLauncherContextService.ChangeQuery(BarLauncherContextService.ActionKeyword + BarLauncherContextService.Seperater + getNewQuery() + BarLauncherContextService.Seperater),
-            ShouldClose = false,
-        };
+        protected BarLauncherResult GetCompletionResult(string title, string subTitle, Func<string> getNewQuery) => BarLauncherContextService.GetCompletionResult(title, subTitle, getNewQuery);
 
-        protected BarLauncherResult GetCompletionResultFinal(string title, string subTitle, Func<string> getNewQuery) => new BarLauncherResult
-        {
-            Title = title,
-            SubTitle = subTitle,
-            Action = () => BarLauncherContextService.ChangeQuery(BarLauncherContextService.ActionKeyword + BarLauncherContextService.Seperater + getNewQuery()),
-            ShouldClose = false,
-        };
+        protected BarLauncherResult GetCompletionResultFinal(string title, string subTitle, Func<string> getNewQuery) => BarLauncherContextService.GetCompletionResultFinal(title, subTitle, getNewQuery);
 
         public virtual IEnumerable<BarLauncherResult> GetResults(BarLauncherQuery query) => MatchCommands(query, 0, CommandInfos, string.Empty);
 

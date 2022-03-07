@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
-		<Version>2.0.1</Version>
-	</PropertyGroup>
+    <Import Project="..\Common.targets"/>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
 
-	<ItemGroup>
-		<PackageReference Include="TextCopy" Version="6.1.0" />
-	</ItemGroup>
+        <PackageId>BarLauncher.EasyHelper</PackageId>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="BarLauncher-EasyHelper-64.png" Pack="true" PackagePath="\" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="TextCopy" Version="6.1.0" />
+    </ItemGroup>
 </Project>

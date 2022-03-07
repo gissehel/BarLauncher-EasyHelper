@@ -7,11 +7,11 @@ namespace BarLauncher.EasyHelper.Wox.Service
 {
     public class ResultService : IResultService
     {
-        private IBarLauncherContextService WoxContextService { get; set; }
+        private IBarLauncherContextService BarLauncherContextService { get; set; }
 
-        public ResultService(IBarLauncherContextService woxContextService)
+        public ResultService(IBarLauncherContextService barLauncherContextService)
         {
-            WoxContextService = woxContextService;
+            BarLauncherContextService = barLauncherContextService;
         }
 
         public List<Result> MapResults(IEnumerable<BarLauncherResult> results)
@@ -24,7 +24,7 @@ namespace BarLauncher.EasyHelper.Wox.Service
                 {
                     Title = result.Title,
                     SubTitle = result.SubTitle,
-                    IcoPath = result.Icon ?? WoxContextService.IconPath,
+                    IcoPath = result.Icon ?? BarLauncherContextService.IconPath,
                     Action = e =>
                     {
                         if (e.SpecialKeyState.CtrlPressed)
