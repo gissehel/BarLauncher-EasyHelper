@@ -1,4 +1,4 @@
-name: publish
+name: build and publish
 
 on:
     push:
@@ -30,8 +30,9 @@ jobs:
                 name: nupkg
                 path: ./nupkg/*.nupkg
 
-            - name: Build
-              run: scripts\compile.cmd
-      
+            - name: Publish to api.nuget.org
+              if: "contains(github.ref, 'refs/tags')"
+              run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+
             - name: List directory nupkg
               run: dir nupkg
