@@ -11,5 +11,7 @@
         void StartCommandLine(string command, string arguments);
 
         void CopyTextToClipboard(string text);
+
+        void OpenDirectory(string directory);
     }
 }

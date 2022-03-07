@@ -6,7 +6,7 @@ namespace BarLauncher.EasyHelper.Flow.Launcher.Service
 {
     public class BarLauncherContextService : BarLauncherContextServiceBase, IBarLauncherContextService
     {
-        private PluginInitContext Context { get; set; }
+        internal PluginInitContext Context { get; set; }
 
         public BarLauncherContextService(PluginInitContext context) : base()
         {

@@ -15,7 +15,7 @@ namespace BarLauncher.EasyHelper.Service
 
         public string ApplicationDataPath => GetApplicationDataPath();
 
-        private string GetApplicationDataPath()
+        protected virtual string GetApplicationDataPath()
         {
             var appDataPathParent = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var appDataPath = Path.Combine(appDataPathParent, ApplicationName);
@@ -26,11 +26,9 @@ namespace BarLauncher.EasyHelper.Service
             return appDataPath;
         }
 
-        public string DatabaseName => ApplicationName;
-
         public string ApplicationName { get; }
 
-        public void OpenUrl(string url)
+        public virtual void OpenUrl(string url)
         {
             var proc = new Process
             {
@@ -53,7 +51,7 @@ namespace BarLauncher.EasyHelper.Service
             }
         }
 
-        public void StartCommandLine(string command, string arguments)
+        public virtual void StartCommandLine(string command, string arguments)
         {
             var proc = new Process
             {
@@ -78,9 +76,8 @@ namespace BarLauncher.EasyHelper.Service
             }
         }
 
-        public void CopyTextToClipboard(string text)
-        {
-            TextCopy.ClipboardService.SetText(text);
-        }
+        public virtual void CopyTextToClipboard(string text) => TextCopy.ClipboardService.SetText(text);
+
+        public virtual void OpenDirectory(string directory) => StartCommandLine(directory, "");
     }
 }
