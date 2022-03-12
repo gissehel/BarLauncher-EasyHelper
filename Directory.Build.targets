@@ -1,13 +1,2 @@
 <Project>
-    <PropertyGroup>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <Authors>gissehel</Authors>
-        <PackageTags>Bar Launcher Plugin Helper</PackageTags>
-        <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher.</description>
-        <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-        <PackageProjectUrl>https://github.com/gissehel/BarLauncher-EasyHelper</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/gissehel/BarLauncher-EasyHelper/master/res/BarLauncher-EasyHelper-32.png</PackageIconUrl>
-        <Copyright>MIT</Copyright>
-        <PackageOutputPath>../nupkg</PackageOutputPath>
-    </PropertyGroup>
 </Project> 
