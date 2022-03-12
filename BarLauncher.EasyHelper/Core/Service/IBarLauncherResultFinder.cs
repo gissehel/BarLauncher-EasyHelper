@@ -5,7 +5,7 @@ namespace BarLauncher.EasyHelper.Core.Service
 {
     public interface IBarLauncherResultFinder : IDisposable
     {
-        IEnumerable<BarLauncherResult> GetResults(BarLauncherQuery woxQuery);
+        IEnumerable<BarLauncherResult> GetResults(BarLauncherQuery barLauncherQuery);
 
         void Init();
     }

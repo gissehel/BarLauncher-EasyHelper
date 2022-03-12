@@ -45,11 +45,11 @@ namespace BarLauncher.EasyHelper.Test.Mock.Service
         private void SetCurrentQuery(string query)
         {
             CurrentQuery = query;
-            var woxQuery = QueryService.GetBarLauncherQuery(CurrentQuery);
-            SetActionKeyword(woxQuery.Command);
-            if (BarLauncherResultFinderByCommandName.ContainsKey(woxQuery.Command))
+            var barLauncherQuery = QueryService.GetBarLauncherQuery(CurrentQuery);
+            SetActionKeyword(barLauncherQuery.Command);
+            if (BarLauncherResultFinderByCommandName.ContainsKey(barLauncherQuery.Command))
             {
-                var results = BarLauncherResultFinderByCommandName[woxQuery.Command].GetResults(woxQuery);
+                var results = BarLauncherResultFinderByCommandName[barLauncherQuery.Command].GetResults(barLauncherQuery);
                 if (results == null)
                 {
                     Results = new List<BarLauncherResult>();
