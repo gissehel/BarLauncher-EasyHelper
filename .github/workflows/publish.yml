@@ -18,12 +18,12 @@ jobs:
             - uses: actions/checkout@v2
 
             - name: Get the version (for tags)
-              if: "contains(github.ref, 'refs/tags')"
+              if: "startsWith(github.ref, 'refs/tags')"
               shell: bash
               run: echo "VERSION=$(cat VERSION)" >> "${GITHUB_ENV}"
 
             - name: Get the version (for normal commits)
-              if: "!contains(github.ref, 'refs/tags')"
+              if: "!startsWith(github.ref, 'refs/tags')"
               shell: bash
               run: echo "VERSION=$(cat VERSION)-$(date +%s)" >> "${GITHUB_ENV}"
 
@@ -37,5 +37,13 @@ jobs:
                   path: ./nupkg/*.nupkg
 
             - name: Publish to api.nuget.org
-              if: "contains(github.ref, 'refs/tags')"
+              if: "success() && startsWith(github.ref, 'refs/tags')"
               run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+
+            - name: "Create release ${{ env.VERSION }}"
+              if: "success() && startsWith(github.ref, 'refs/tags')"
+              uses: "softprops/action-gh-release@v1"
+              with:
+                  files: ./nupkg/*.nupkg
+                  draft: false
+                  prerelease: false
