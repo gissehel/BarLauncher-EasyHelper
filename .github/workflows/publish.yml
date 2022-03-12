@@ -3,12 +3,9 @@ name: build and publish
 on:
     push:
         branches:
-            - master
+            - *
         tags:
             - 'v*'
-
-env:
-    SOLUTION_NAME: 'BarLauncher-EasyHelper.sln' # set this to your application's name
 
 jobs:
     build:
@@ -17,22 +14,25 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: build ${{ env.SOLUTION_NAME }}
-              run: dotnet.exe build ${{ env.SOLUTION_NAME }}
+            - name: Get the version (for tags)
+              if: "contains(github.ref, 'refs/tags')"
+              shell: bash
+              run: echo "VERSION=$(cat VERSION)" >> "${GITHUB_ENV}"
 
-            - name: pack ${{ env.SOLUTION_NAME }}
-              run: dotnet.exe pack ${{ env.SOLUTION_NAME }}
+            - name: Get the version (for normal commits)
+              if: "!contains(github.ref, 'refs/tags')"
+              shell: bash
+              run: echo "VERSION=$(cat VERSION)-$(date +%s)" >> "${GITHUB_ENV}"
+
+            - name: pack BarLauncher-EasyHelper (version ${{ env.VERSION }})
+              run: dotnet pack BarLauncher-EasyHelper.sln -c Release -p:VERSION=${{ env.VERSION }}
 
             - name: Upload Artifacts
-              if: "contains(github.ref, 'refs/tags')"
               uses: actions/upload-artifact@v2
               with:
-                name: nupkg
-                path: ./nupkg/*.nupkg
+                  name: nupkg
+                  path: ./nupkg/*.nupkg
 
             - name: Publish to api.nuget.org
               if: "contains(github.ref, 'refs/tags')"
               run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
-
-            - name: List directory nupkg
-              run: dir nupkg
