@@ -1,7 +1,6 @@
 <Project>
     <PropertyGroup>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <Version>2.0.3</Version>
         <Authors>gissehel</Authors>
         <PackageTags>Bar Launcher Plugin Helper</PackageTags>
         <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher.</description>

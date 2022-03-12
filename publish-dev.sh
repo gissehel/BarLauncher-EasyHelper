@@ -8,4 +8,3 @@ for nupkg in nupkg/*.nupkg
 do
     nuget.exe add "${nupkg}" -source "${NUGET_REPO}"
 done
-
