@@ -36,21 +36,36 @@ namespace BarLauncher.EasyHelper
             => AddDefaultCommand(func, string.Empty);
 
         protected void AddDefaultCommand(ResultGetter func, string path)
-            => AddCommand(null, null, null, null, func, path);
+            => AddCommand(null, null as Func<string>, null as Func<string>, null, func, path);
 
         protected void AddCommand(string name, string title, string subtitle, ResultGetter func)
             => AddCommand(name, title, subtitle, func, string.Empty);
 
+        protected void AddCommand(string name, Func<string> titleGetter, Func<string> subtitleGetter, ResultGetter func)
+            => AddCommand(name, titleGetter, subtitleGetter, func, string.Empty);
+
         protected void AddCommand(string name, string title, string subtitle, ResultGetter func, string path)
             => AddCommand(name, title, subtitle, null, func, path);
+
+        protected void AddCommand(string name, Func<string> titleGetter, Func<string> subtitleGetter, ResultGetter func, string path)
+            => AddCommand(name, titleGetter, subtitleGetter, null, func, path);
 
         protected void AddCommand(string name, string title, string subtitle, Action action)
             => AddCommand(name, title, subtitle, action, string.Empty);
 
+        protected void AddCommand(string name, Func<string> titleGetter, Func<string> subtitleGetter, Action action)
+            => AddCommand(name, titleGetter, subtitleGetter, action, string.Empty);
+
         protected void AddCommand(string name, string title, string subtitle, Action action, string path)
             => AddCommand(name, title, subtitle, action, null, path);
 
-        private void AddCommand(string name, string title, string subtitle, Action action, ResultGetter func, string path)
+        protected void AddCommand(string name, Func<string> titleGetter, Func<string> subtitleGetter, Action action, string path)
+            => AddCommand(name, titleGetter, subtitleGetter, action, null, path);
+
+        protected void AddCommand(string name, string title, string subtitle, Action action, ResultGetter func, string path)
+            => AddCommand(name, () => title, () => subtitle, action, func, path);
+
+        private void AddCommand(string name, Func<string> titleGetter, Func<string> subtitleGetter, Action action, ResultGetter func, string path)
         {
             var actualPath = string.IsNullOrEmpty(path) ? string.Empty : path;
             if (name == null)
@@ -59,7 +74,7 @@ namespace BarLauncher.EasyHelper
             }
             else
             {
-                var commandInfo = new CommandInfo { Name = name, Title = title, Subtitle = subtitle, FinalAction = action, ResultGetter = func, Path = actualPath };
+                var commandInfo = new CommandInfo { Name = name, TitleGetter = titleGetter, SubtitleGetter = subtitleGetter, FinalAction = action, ResultGetter = func, Path = actualPath };
                 GetCommandInfos(actualPath).Add(commandInfo);
             }
         }
@@ -86,11 +101,11 @@ namespace BarLauncher.EasyHelper
             {
                 if (commandInfo.FinalAction != null)
                 {
-                    return GetActionResult(commandInfo.Title, commandInfo.Subtitle, commandInfo.FinalAction);
+                    return GetActionResult(commandInfo.TitleGetter?.Invoke(), commandInfo.SubtitleGetter?.Invoke(), commandInfo.FinalAction);
                 }
                 else
                 {
-                    return GetCompletionResult(commandInfo.Title, commandInfo.Subtitle, () => string.IsNullOrEmpty(commandInfo.Path) ? commandInfo.Name : commandInfo.Path + BarLauncherContextService.Seperater + commandInfo.Name);
+                    return GetCompletionResult(commandInfo.TitleGetter?.Invoke(), commandInfo.SubtitleGetter?.Invoke(), () => string.IsNullOrEmpty(commandInfo.Path) ? commandInfo.Name : commandInfo.Path + BarLauncherContextService.Seperater + commandInfo.Name);
                 }
             }
             return null;
@@ -114,7 +129,7 @@ namespace BarLauncher.EasyHelper
                     {
                         if (commandInfo.FinalAction != null)
                         {
-                            results.Add(GetActionResult(commandInfo.Title, commandInfo.Subtitle, commandInfo.FinalAction));
+                            results.Add(GetActionResult(commandInfo.TitleGetter?.Invoke(), commandInfo.SubtitleGetter?.Invoke(), commandInfo.FinalAction));
                         }
                         else if (commandInfo.ResultGetter != null)
                         {
