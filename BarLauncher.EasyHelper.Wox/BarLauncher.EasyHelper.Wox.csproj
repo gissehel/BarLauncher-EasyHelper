@@ -1,18 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="..\Common.targets"/>
-	<PropertyGroup>
-		<TargetFrameworks>net48</TargetFrameworks>
+    <PropertyGroup>
+        <TargetFrameworks>net48</TargetFrameworks>
 
         <PackageId>BarLauncher.EasyHelper.Wox</PackageId>
         <PackageTags>Bar Launcher Plugin Helper Wox</PackageTags>
         <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher. This is the dll to use to create a Wox Plugin</description>
-	</PropertyGroup>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Wox.Plugin" Version="1.3.159" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Wox.Plugin" Version="1.3.159" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\BarLauncher.EasyHelper\BarLauncher.EasyHelper.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\BarLauncher.EasyHelper\BarLauncher.EasyHelper.csproj" />
+    </ItemGroup>
 </Project>
