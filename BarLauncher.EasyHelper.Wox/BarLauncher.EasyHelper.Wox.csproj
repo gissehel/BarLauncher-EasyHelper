@@ -2,7 +2,6 @@
     <PropertyGroup>
         <TargetFrameworks>net48</TargetFrameworks>
 
-        <PackageId>BarLauncher.EasyHelper.Wox</PackageId>
         <PackageTags>Bar Launcher Plugin Helper Wox</PackageTags>
         <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher. This is the dll to use to create a Wox Plugin</description>
     </PropertyGroup>

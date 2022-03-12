@@ -2,7 +2,6 @@
     <PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
 
-        <PackageId>BarLauncher.EasyHelper.Flow.Launcher</PackageId>
         <PackageTags>Bar Launcher Plugin Helper Flow Launcher</PackageTags>
         <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher. This is the dll to use to create a Flow Launcher Plugin</description>
     </PropertyGroup>

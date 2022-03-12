@@ -2,7 +2,6 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0</TargetFrameworks>
 
-        <PackageId>BarLauncher.EasyHelper.Test.Mock</PackageId>
         <PackageTags>Bar Launcher Plugin Helper Mock</PackageTags>
         <description>A bar launcher helper to create plugins for bar launcher apps like Wox or Flow Launcher. This dll is containing the mock classes usefull for tests.</description>
     </PropertyGroup>
