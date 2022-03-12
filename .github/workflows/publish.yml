@@ -7,6 +7,9 @@ on:
         tags:
             - 'v*'
 
+env:
+    BASE_SOLUTION_NAME: 'BarLauncher-EasyHelper'
+
 jobs:
     build:
         name: Build and deploy
@@ -24,13 +27,13 @@ jobs:
               shell: bash
               run: echo "VERSION=$(cat VERSION)-$(date +%s)" >> "${GITHUB_ENV}"
 
-            - name: pack BarLauncher-EasyHelper (version ${{ env.VERSION }})
-              run: dotnet pack BarLauncher-EasyHelper.sln -c Release -p:VERSION=${{ env.VERSION }}
+            - name: pack ${{ env.BASE_SOLUTION_NAME }} (version ${{ env.VERSION }})
+              run: dotnet pack ${{ env.BASE_SOLUTION_NAME }}.sln -c Release -p:VERSION=${{ env.VERSION }}
 
-            - name: Upload Artifacts
+            - name: Upload Artifacts (version ${{ env.VERSION }})
               uses: actions/upload-artifact@v2
               with:
-                  name: nupkg
+                  name: ${{ env.BASE_SOLUTION_NAME }}-${{ env.VERSION }}
                   path: ./nupkg/*.nupkg
 
             - name: Publish to api.nuget.org
