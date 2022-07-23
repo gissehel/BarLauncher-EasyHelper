@@ -17,39 +17,42 @@ namespace BarLauncher.EasyHelper.Flow.Launcher.Service
         public List<Result> MapResults(IEnumerable<BarLauncherResult> results)
         {
             var resultList = new List<Result>();
-            foreach (var result in results)
+            if (results != null)
             {
-                var action = result.Action;
-                resultList.Add(new Result
+                foreach (var result in results)
                 {
-                    Title = result.Title,
-                    SubTitle = result.SubTitle,
-                    IcoPath = result.Icon ?? BarLauncherContextService.IconPath,
-                    Action = e =>
+                    var action = result.Action;
+                    resultList.Add(new Result
                     {
-                        if (e.SpecialKeyState.CtrlPressed)
+                        Title = result.Title,
+                        SubTitle = result.SubTitle,
+                        IcoPath = result.Icon ?? BarLauncherContextService.IconPath,
+                        Action = e =>
                         {
-                            if (result.CtrlAction != null)
+                            if (e.SpecialKeyState.CtrlPressed)
                             {
-                                return result.CtrlAction();
+                                if (result.CtrlAction != null)
+                                {
+                                    return result.CtrlAction();
+                                }
+                                return false;
                             }
-                            return false;
-                        }
-                        else if (e.SpecialKeyState.WinPressed)
-                        {
-                            if (result.WinAction != null)
+                            else if (e.SpecialKeyState.WinPressed)
                             {
-                                return result.WinAction();
+                                if (result.WinAction != null)
+                                {
+                                    return result.WinAction();
+                                }
+                                return false;
                             }
-                            return false;
+                            else
+                            {
+                                action?.Invoke();
+                                return result.ShouldClose;
+                            }
                         }
-                        else
-                        {
-                            action?.Invoke();
-                            return result.ShouldClose;
-                        }
-                    }
-                });
+                    });
+                }
             }
             return resultList;
         }
